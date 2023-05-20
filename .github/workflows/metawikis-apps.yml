@@ -1,0 +1,41 @@
+# This workflow will build and deploy the webapps to their respective directories on the web server.
+
+name: Webapps
+
+# The `on` section specifies when the workflow will be triggered. In this case, it will be triggered when a push is made to the `main` branch.
+on:
+  push:
+    branches:
+      - main
+
+# The `jobs` section specifies the jobs that will be run in the workflow. In this case, there is only one job, called `build`.
+jobs:
+  build:
+    # The `runs-on` section specifies the operating system that the job will run on. In this case, it will run on Ubuntu 20.04 LTS.
+    runs-on: ubuntu-latest
+
+    # The `steps` section specifies the steps that will be run in the job.
+    steps:
+      # The first step is to check out the code from the repository.
+      - uses: actions/checkout@v2
+
+      # The second step is to install the dependencies that are needed to build the webapps.
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-pip
+          pip3 install -r requirements.txt
+
+      # The third step is to build the webapps.
+      - name: Build webapps
+        run: |
+          python3 build.py
+
+      # The fourth step is to deploy the webapps to the web server.
+      - name: Deploy webapps
+        run: |
+          for app in MetaWiki DownloadIcons PersonalSchedule SecretMessages SocialPublishing; do
+            rsync -av dist/$app $app:/var/www/html/
+          done
+
+# This workflow can be used on a Kubernetes or Azure cloud webapp platform. To use it on Kubernetes, you will need to create a Kubernetes cluster and deploy the workflow to the cluster. To use it on Azure, you will need to create an Azure App Service and deploy the workflow to the App Service.
