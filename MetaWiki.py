@@ -1,5 +1,7 @@
+import json
+
 from flask import Flask, request
-from flask_restful import Resource, Api
+from flask import Resource, Api
 from cryptography.fernet import Fernet
 from azure.storage.blob import BlobServiceClient
 
@@ -15,23 +17,42 @@ blob_service_client = BlobServiceClient(account_url="<YOUR_ACCOUNT_URL>",
 
 # Define the data models
 class SocialMediaPost(object):
-    def __init__(self, id, title, content):
+    def __init__(self, id, title, content, author, created_at, updated_at, likes, comments, shares):
         self.id = id
         self.title = title
         self.content = content
+        self.author = author
+        self.created_at = created_at
+        self.updated_at = updated_at
+        self.likes = likes
+        self.comments = comments
+        self.shares = shares
+
 
 class Icon(object):
-    def __init__(self, id, name, url):
+    def __init__(self, id, name, url, size, type, color, description, tags):
         self.id = id
         self.name = name
         self.url = url
+        self.size = size
+        self.type = type
+        self.color = color
+        self.description = description
+        self.tags = tags
+
 
 class Schedule(object):
-    def __init__(self, id, date, time, tasks):
+    def __init__(self, id, date, time, tasks, location, notes, priority, repeats, reminders):
         self.id = id
         self.date = date
         self.time = time
         self.tasks = tasks
+        self.location = location
+        self.notes = notes
+        self.priority = priority
+        self.repeats = repeats
+        self.reminders = reminders
+
 
 class SecretMessage(object):
     def __init__(self, id, sender, recipient, message):
@@ -41,11 +62,17 @@ class SecretMessage(object):
         self.message = message
 
 class MmoData(object):
-    def __init__(self, id, character_name, level, experience):
+    def __init__(self, id, character_name, level, experience, race, skills, guild, location, online):
         self.id = id
         self.character_name = character_name
         self.level = level
         self.experience = experience
+        self.race = race
+        self.skills = skills
+        self.guild = guild
+        self.location = location
+        self.online = online
+
 
 # Define the resources
 class SocialMedia(Resource):
