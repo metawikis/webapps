@@ -1,0 +1,48 @@
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  text-align: center;
+}
+
+h2 {
+  margin-top: 20px;
+}
+
+p {
+  margin-bottom: 10px;
+}
+
+.container {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.row {
+  margin-top: 20px;
+}
+
+.col-md-6 {
+  float: left;
+  width: 50%;
+}
+
+form {
+  margin-top: 20px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid black;
+}
+
+input[type="submit"] {
+  background-color: green;
+  color: white;
+  padding: 10px;
+  border: none;
+}

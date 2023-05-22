@@ -1,80 +1,94 @@
 from flask import Flask, request
-from web3 import Web3
-from azure.storage.blob import BlobClient
+from flask_restful import Resource, Api
+
+import os
+#from azure.storage.blob import BlobClient
 
 app = Flask(__name__)
+api = Api(app)
 
-@app.route("/")
-def index():
-  return "Hello, world!"
+class SocialMediaData(object):
+    def __init__(self, id, user_id, post_id, text, created_at, updated_at):
+        self.id = id
+        self.user_id = user_id
+        self.post_id = post_id
+        self.text = text
+        self.created_at = created_at
+        self.updated_at = updated_at
 
-@app.route("/posts")
-def get_posts():
-  posts = []
-  for post in web3.eth.getTransactionReceipts():
-    if post["contractAddress"] == "0x0000000000000000000000000000000000000001":
-      posts.append({
-        "id": post["blockNumber"],
-        "title": post["args"]["title"],
-        "body": post["args"]["body"],
-        "author": post["args"]["author"],
-        "created_at": post["blockHash"]
-      })
-  return jsonify(posts)
+class SocialMedia(Resource):
+    def get(self):
+        # Get all of the user's social media posts
+        posts = []
+        for post in SocialMediaData.query.all():
+            posts.append({
+                "id": post.id,
+                "user_id": post.user_id,
+                "post_id": post.post_id,
+                "text": post.text,
+                "created_at": post.created_at,
+                "updated_at": post.updated_at
+            })
+        return jsonify(posts)
 
-@app.route("/posts/<post_id>")
-def get_post(post_id):
-  post = web3.eth.getTransactionReceipt(post_id)
-  if post is None:
-    return 404
-  return jsonify({
-    "id": post["blockNumber"],
-    "title": post["args"]["title"],
-    "body": post["args"]["body"],
-    "author": post["args"]["author"],
-    "created_at": post["blockHash"]
-  })
+    def post(self):
+        # Get the user's social media post
+        post = request.get_json()
 
-@app.route("/posts", methods=["POST"])
-def create_post():
-  post = request.json
-  web3.eth.sendTransaction({
-    "from": web3.eth.accounts[0],
-    "to": "0x0000000000000000000000000000000000000001",
-    "value": web3.toWei(1, "ether"),
-    "data": web3.toHex(json.dumps(post))
-  })
-  return 201, {"Location": url_for("get_post", post_id=post["id"])}
+        # Create the post
+        new_post = SocialMediaData(id=None, user_id=post["user_id"], post_id=post["post_id"], text=post["text"], created_at=post["created_at"], updated_at=post["updated_at"])
+        new_post.save()
 
-@app.route("/followers/<user_id>")
-def get_followers(user_id):
-  followers = []
-  for follower in web3.eth.getTransactionReceipts():
-    if follower["contractAddress"] == "0x0000000000000000000000000000000000000002":
-      followers.append({
-        "id": follower["blockNumber"],
-        "user_id": follower["args"]["user_id"],
-        "follower_id": follower["args"]["follower_id"]
-      })
-  return jsonify(followers)
+        return new_post
 
-@app.route("/followers", methods=["POST"])
-def follow_user():
-  follower = request.json
-  web3.eth.sendTransaction({
-    "from": web3.eth.accounts[0],
-    "to": "0x0000000000000000000000000000000000000002",
-    "value": web3.toWei(1, "ether"),
-    "data": web3.toHex(json.dumps(follower))
-  })
-  return 201, {"Location": url_for("get_follower", follower_id=follower["id"])}
+    def put(self, id):
+        # Get the user's social media post
+        post = request.get_json()
+
+        # Update the post
+        social_media_data = SocialMediaData.query.get(id)
+        social_media_data.user_id = post["user_id"]
+        social_media_data.post_id = post["post_id"]
+        social_media_data.text = post["text"]
+        social_media_data.created_at = post["created_at"]
+        social_media_data.updated_at = post["updated_at"]
+        social_media_data.save()
+
+        return social_media_data
+
+    def delete(self, id):
+        # Get the user's social media post
+        post = SocialMediaData.query.get(id)
+
+        # Delete the post
+        post.delete()
+
+        return "Post deleted"
+
+api.add_resource(SocialMedia, "/")
 
 @app.route("/upload")
 def upload():
-  blob_client = BlobClient(account_name="<account_name>", account_key="<account_key>", container_name="<container_name>")
-  for post in posts:
-    blob_client.upload_blob(post.body, post.id)
-  return 200
+    # Get the blob client
+ #   blob_client = BlobClient(account_name="<account_name>", account_key="<account_key>", container_name="<container_name>")
+
+    # Get all of the social media posts
+    posts = []
+    for post in SocialMediaData.query.all():
+        posts.append({
+            "id": post.id,
+            "user_id": post.user_id,
+            "post_id": post.post_id,
+            "text": post.text,
+            "created_at": post.created_at,
+            "updated_at": post.updated_at
+        })
+
+    # Upload the social media posts to the blob
+   # for post in posts:
+  #      blob_client.upload_blob(post.text, post.id)
+
+    #return 200
 
 if __name__ == "__main__":
-  app.run()
+    app.run(debug=True)
