@@ -35,7 +35,7 @@ for image in gis.results():
     # show it in the default system photo viewer
     listbox.append(temp_img)
 
-import tkinter as tk
+import labels as tk
 import requests
 import os
 # Define the search terms.

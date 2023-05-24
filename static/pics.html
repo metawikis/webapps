@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Iconic Pictures</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+      <link rel="stylesheet" href="static/styles.css">
+
+</head>
+<body>
+  <h1 class="text-center">My Iconic Pictures</h1>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Profile_icon_2020.svg/1200px-Profile_icon_2020.svg.png" class="rounded-circle mr-2" alt="User avatar">
+      </div>
+      <div class="col-md-9">
+        <h2 class="mb-0">Bard</h2>
+        <p class="mb-0">@bard</p>
+        <p>This is my drawer of iconic pictures. I can store up to 10 pictures in this drawer.</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <h3>Pictures</h3>
+        <div class="list-group">
+          <a href="#" class="list-group-item list-group-item-action">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Profile_icon_2020.svg/1200px-Profile_icon_2020.svg.png" class="rounded-circle mr-2" alt="User avatar">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1">Mona Lisa</h5>
+              <small class="text-muted">Leonardo da Vinci</small>
+            </div>
+          </a>
+          <a href="#" class="list-group-item list-group-item-action">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Profile_icon_2020.svg/1200px-Profile_icon_2020.svg.png" class="rounded-circle mr-2" alt="User avatar">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1">Starry Night</h5>
+              <small class="text-muted">Vincent van Gogh</small>
+            </div>
+          </a>
+          <a href="#" class="list-group-item list-group-item-action">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Profile_icon_2020.svg/1200px-Profile_icon_2020.svg.png" class="rounded-circle mr-2" alt="User avatar">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1">Guernica</h5>
+              <small class="text-muted">Pablo Picasso</small>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <h3>Add Picture</h3>
+        <form action="/" method="post">
+          <input type="file" name="file">
+          <input type="submit" value="Add">
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

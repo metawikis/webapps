@@ -1,90 +1,89 @@
 import tkinter as tk
 
 
-data = {
-  "Title": "The Great Gatsby",
-  "Author": "F. Scott Fitzgerald",
-  "Genre": "Classic Fiction",
-  "Publication Date": "1925",
-  "Setting": "West Egg, Long Island",
-  "Characters": [
-    "Nick Carraway",
-    "Jay Gatsby",
-    "Daisy Buchanan",
-    "Tom Buchanan",
-    "Jordan Baker",
-  ],
-  "Plot": "The story follows Nick Carraway, a young man from the Midwest, as he moves to West Egg, Long Island, seeking his fortune as a bond salesman. There he meets his neighbor, Jay Gatsby, a mysterious millionaire who throws extravagant parties. Nick is drawn into Gatsby's world and eventually learns that Gatsby is in love with Daisy Buchanan, a married woman who lives across the bay. Nick sets out to reunite Gatsby and Daisy, but their love affair is doomed from the start.",
-  "Themes": [
-    "The American Dream",
-    "Love",
-    "Loss",
-    "Greed",
-    "Deception",
-  ],
-  "Critical Reception": "The Great Gatsby was a critical and commercial success upon its publication. It has since been praised by critics for its writing, its characters, and its themes. The novel has been adapted into several films, including a 2013 version starring Leonardo DiCaprio.",
-  "Modern Authors": [
-    "Haruki Murakami",
-    "Cormac McCarthy",
-    "Stephen King",
-    "Ocean Vuong",
-    "Zadie Smith",
-    "Margaret Atwood",
-    "Chimamanda Ngozi Adichie",
-    "Jonathan Franzen",
-    "Kazuo Ishiguro",
-    "Ian McEwan",
-  ],
-  "Favorite Foods": ["Pizza", "Ice Cream", "Chocolate", "Sushi", "Hamburgers"],
-  "Favorite Movies": ["The Shawshank Redemption", "The Godfather", "The Dark Knight", "Pulp Fiction", "The Lord of the Rings: The Fellowship of the Ring"],
-  "Favorite TV Shows": ["Breaking Bad", "Game of Thrones", "The Office", "Friends", "The Simpsons"],
-  "Favorite Bands": ["The Beatles", "The Rolling Stones", "Pink Floyd", "Led Zeppelin", "The Who"],
-  "Favorite Books": ["The Catcher in the Rye", "To Kill a Mockingbird", "1984", "Animal Farm", "The Color Purple"],
-  "Favorite Authors": ["J.D. Salinger", "Harper Lee", "George Orwell", "George Orwell", "Alice Walker"],
-  "Favorite Sports Teams": ["New York Yankees", "New York Giants", "New York Knicks", "New York Rangers", "New York Islanders"],
-  "Favorite Athletes": ["Tom Brady", "LeBron James", "Michael Jordan", "Tiger Woods", "Serena Williams"],
-  "Favorite Places to Visit": ["New York City", "Los Angeles", "London", "Paris", "Rome"],
-  "Favorite Things to Do": ["Traveling", "Reading", "Watching Movies", "Listening to Music", "Playing Sports"],
-  "Favorite Quotes": ["The only way to do great work is to love what you do.", "If you can dream it, you can do it.", "The best and most beautiful things in the world cannot be seen or even touched - they must be felt with the heart.", "Never give up on what you really want to do. The person with big dreams is more powerful than one with all the facts.", "The only way to fail is to give up."],
-  "Favorite Colors": ["Blue", "Green", "Red", "Yellow", "Purple"],
-  "Favorite Animals": ["Dogs", "Cats", "Horses", "Birds", "Fish"],
-  "Favorite Flowers": ["Roses", "Tulips", "Lilies", "Sunflowers", "Orchids"],
-}
-def create_button(root, text, command):
-  button = tk.Button(root, text=text, command=command, width=10, height=2)
-  button.pack(side="left", fill="y")
+class LabelingWindow(tk.Frame):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
-def move_to_next_key():
-    global current_key
-    current_key += 1
-    if current_key >= len(data):
-        current_key = 0
-current_key = 0
+        # Create a label for the data.
+        self.data_label = tk.Label(self, text="Data:")
+        self.data_label.pack(side="top")
 
+        # Create a text box for the data.
+        self.data_textbox = tk.Text(self, width=10, height=2)
+        self.data_textbox.pack(side="top")
 
-def main():
-  root = tk.Tk()
-  text_block = tk.Text(root)
-  text_block.pack()
-  # Add the data from the dictionary to the text box.
-  for key, value in data.items():
-      for key in data:
-          create_button(root, key, lambda: text_block.insert("end", data[key]))
-          text_block.delete("1.0", "end")
-          text_block.insert("end", data[key])
-  # Create a text block.
+        # Create a label for the label.
+        self.label_label = tk.Label(self, text="Label:")
+        self.label_label.pack(side="top")
 
+        # Create a text box for the label.
+        self.label_textbox = tk.Text(self, width=10, height=2)
+        self.label_textbox.pack(side="top")
 
-  # Create buttons for each key in the dictionary.
+        # Create a button to add the data and label to a list.
+        self.add_button = tk.Button(self, text="Add")
+        self.add_button.pack(side="top")
 
-    # Create a button to move to the next key.
-  next_key_button = tk.Button(root, text="Next Key", command=lambda: move_to_next_key())
-  next_key_button.pack(side="right")
+        # Create a button to clear the data and label text boxes.
+        self.clear_button = tk.Button(self, text="Clear")
+        self.clear_button.pack(side="top")
 
-  root.mainloop()
+        # Create a list to store the data and label text.
+        self.data_list = []
 
-# Create a variable to keep track of the current key.
+        # Bind the add button to an event handler that adds the data and label text to the list.
+     #   self.add_button.config(command=self.on_add_button_click)
 
+        # Bind the clear button to an event handler that clears the data and label text boxes.
+#        self.clear_button.config(command=self.on_clear_button_click)
+
+        # Create a dropdown list of genres.
+        self.genre_dropdown = tk.OptionMenu(self, "", "Action", "Adventure", "Comedy", "Drama", "Horror", "Mystery", "Romance", "Sci-Fi", "Thriller")
+        self.genre_dropdown.pack(side="top")
+
+        # Create a lot more buttons for tags.
+        self.tag_buttons = []
+        for tag in ["Funny", "Sad", "Scary", "Happy", "Love", "Hate", "Peace", "War", "Life", "Death"]:
+            button = tk.Button(self, text=tag)
+            self.tag_buttons.append(button)
+
+        # Pack the buttons in a vertical column.
+        for button in self.tag_buttons:
+            button.pack(side="top")
+
+        # Create a text body to cycle through when buttons are pressed.
+        self.text_body = tk.Text(self, width=100, height=20)
+        self.text_body.pack(side="bottom")
+
+        # Bind the tag buttons to an event handler that cycles through the text body.
+        for button in self.tag_buttons:
+            button.config(command=self.on_tag_button_click)
+
+    def on_add_button_click(self, event):
+        # Get the data text.
+        data_text = self.data_textbox.get("1.0", "end")
+
+        # Get the label text.
+        label_text = self.label_textbox.get("1.0", "end")
+
+        # Add the data and label text to the list.
+        self.data_list.append((data_text, label_text))
+
+        # Clear the data and label text boxes.
+        self.data_textbox.delete("1.0", "end")
+        self.label_textbox.delete("1.0", "end")
+
+    def on_tag_button_click(self, event):
+        # Get the tag text.
+        tag_text = event.widget.cget("text")
+
+        # Cycle through the text body, adding the tag text to each line.
+        for i in range(self.text_body.get("1.0", "end").count("\n")):
+            self.text_body.insert("end", tag_text + "\n")
 
 if __name__ == "__main__":
-  main()
+    root = tk.Tk()
+    data_entry_window = LabelingWindow(root)
+    data_entry_window.pack(side="top", fill="both", expand=True)
+    root.mainloop()
